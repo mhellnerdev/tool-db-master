@@ -1,0 +1,1709 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% if line=='shaft' %}
+    <script>
+    $(document).ready(function () {
+        $('.nav-tabs a[href="#shaftTab"]').tab('show');
+    });
+    </script>
+
+{% elif line=='body' %}
+    <script>
+    $(document).ready(function () {
+        $('.nav-tabs a[href="#bodyTab"]').tab('show');
+    });
+    </script>
+
+{% elif line=='mainLine' %}
+    <script>
+    $(document).ready(function () {
+        $('.nav-tabs a[href="#mainLineTab"]').tab('show');
+    });
+    </script>
+{% elif line=='pack' %}
+    <script>
+    $(document).ready(function () {
+        $('.nav-tabs a[href="#packTab"]').tab('show');
+    });
+    </script>
+
+{% endif %}
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <h3 class="text-white">Fox Tooling Database</h3>
+</nav>
+
+<div class="container pt-3 border rounded" style="margin-top:30px">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>WIP Edit</h2>
+        </div>
+        <div class="col-sm-6">
+            <div class="buttons">
+                <button id="deleteWipEdit" type="button" class="btn btn-danger btn"><i class="fas fa-trash"></i> </button>
+                <button id="submitWipEdit" type="submit" class="btn btn-primary btn"><i class="fas fa-save"></i> </button>
+                <button id="closeWipEdit" class="btn btn-secondary btn" onclick="window.close()"><i class="fas fa-times"></i> </button>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <form action="#">
+
+        <div class="form-group row">
+            <label for="toolNum" class="col-sm-3 col-form-label">WIP Number</label>
+            <div class="col-sm-9">
+                <input type="text" name="toolNum" class="form-control" value="{{ wipNum }}" disabled>
+            </div>
+        </div>
+
+        <br>
+    </form>
+
+    <div class="container pt-3 pb-3" style="margin-top:30px">
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" id="toolTabs">
+            <li class="nav-item"> <a class="nav-link active" href="#shaftTab">Shaft</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#bodyTab">Body</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#mainLineTab">Main Line</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#packTab">Pack</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#revTab">Revision History</a> </li>
+        </ul>
+        <br><br>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="shaftTab" class="container tab-pane active">
+
+                <table class="table table-bordered">
+                    <thead class="center">
+                        <tr>
+                            <th></th>
+                            <th>Owner</th>
+                            <th>#</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in shaftSequence %}
+                        {% if shaftList[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> 
+                                <a href="/moveWiUp?id={{ shaftTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=shaft"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ shaftTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=shaft"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td> {{ shaftTable[row][0] }} </td>
+                            <td> {{ shaftTable[row][1] }} </td>
+                            <td> {{ shaftTable[row][2] }} </td>
+                            <td class="text-left"> {{ shaftTable[row][3] }} </td>
+
+
+                            {% if shaftTable[row][4] == 3 %}
+                            <td> {{ shaftTable[row][5] }} </td>
+                            <td> {{ shaftTable[row][6] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTable[row][4] == 1 %}
+                            <td> {{ shaftTable[row][5] }} </td>
+                            <td> {{ shaftTable[row][6] }} </td>
+                            <td colspan="3"> {{ shaftTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ shaftTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=shaft">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+
+                        </tr>
+
+                        {% elif shaftList[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> 
+                                <a href="/moveWiUp?id={{ shaftTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=shaft"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ shaftTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=shaft"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="2"> {{ shaftTable[row][0] }} </td>
+                            <td rowspan="2"> {{ shaftTable[row][1] }} </td>
+                            <td rowspan="2"> {{ shaftTable[row][2] }} </td>
+                            <td class="text-left" rowspan="2"> {{ shaftTable[row][3] }} </td>
+
+                            {% if shaftTable[row][4] == 3 %}
+                            <td> {{ shaftTable[row][5] }} </td>
+                            <td> {{ shaftTable[row][6] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTable[row][4] == 1 %}
+                            <td> {{ shaftTable[row][5] }} </td>
+                            <td> {{ shaftTable[row][6] }} </td>
+                            <td colspan="3"> {{ shaftTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td rowspan="2" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ shaftTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=shaft">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if shaftTable[row+1][4] == 3 %}
+                            <td> {{ shaftTable[row+1][5] }} </td>
+                            <td> {{ shaftTable[row+1][6] }} </td>
+                            <td> {{ shaftTable[row+1][7] }} </td>
+                            <td> {{ shaftTable[row+1][7] }} </td>
+                            <td> {{ shaftTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTable[row+1][4] == 1 %}
+                            <td> {{ shaftTable[row+1][5] }} </td>
+                            <td> {{ shaftTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ shaftTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td  rowspan="3">
+                                <a href="/moveWiUp?id={{ shaftTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=shaft"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ shaftTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=shaft"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="3"> {{ shaftTable[row][0] }} </td>
+                            <td rowspan="3"> {{ shaftTable[row][1] }} </td>
+                            <td rowspan="3"> {{ shaftTable[row][2] }} </td>
+                            <td class="text-left" rowspan="3"> {{ shaftTable[row][3] }} </td>
+
+                            {% if shaftTable[row][4] == 3 %}
+                            <td> {{ shaftTable[row][5] }} </td>
+                            <td> {{ shaftTable[row][6] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> {{ shaftTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTable[row][4] == 1 %}
+                            <td> {{ shaftTable[row][5] }} </td>
+                            <td> {{ shaftTable[row][6] }} </td>
+                            <td colspan="3"> {{ shaftTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td  rowspan="3" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ shaftTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=shaft">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if shaftTable[row+1][4] == 3 %}
+                            <td> {{ shaftTable[row+1][5] }} </td>
+                            <td> {{ shaftTable[row+1][6] }} </td>
+                            <td> {{ shaftTable[row+1][7] }} </td>
+                            <td> {{ shaftTable[row+1][7] }} </td>
+                            <td> {{ shaftTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTable[row+1][4] == 1 %}
+                            <td> {{ shaftTable[row+1][5] }} </td>
+                            <td> {{ shaftTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ shaftTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if shaftTable[row+2][4] == 3 %}
+                            <td> {{ shaftTable[row+2][5] }} </td>
+                            <td> {{ shaftTable[row+2][6] }} </td>
+                            <td> {{ shaftTable[row+2][7] }} </td>
+                            <td> {{ shaftTable[row+2][7] }} </td>
+                            <td> {{ shaftTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTable[row+2][4] == 1 %}
+                            <td> {{ shaftTable[row+2][5] }} </td>
+                            <td> {{ shaftTable[row+2][6] }} </td>
+                            <td colspan="3"> {{ shaftTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <button type="button" id="addShaftWiButton" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Shaft WI
+                </button>
+                
+                <button type="button" id="hideShaftWiButton" class="btn btn-secondary nodisplay">
+                    Hide Table
+                </button>
+                <br><br>
+
+                <div class="input-group mb-3" id="filterShaftWi">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                    </div>
+                    <input id="filterWi" type="text" class="form-control" placeholder="Filter..">
+                </div>
+
+                <table id="shaftWiAll" class="table table-bordered nodisplay">
+                    <thead class=center>
+                        <tr>
+                            <th>Owner</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Add</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in shaftSequenceAll %}
+                        {% if shaftListAll[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> {{ shaftTableAll[row][0] }} </td>
+                            <td> {{ shaftTableAll[row][2] }} </td>
+                            <td class="text-left"> {{ shaftTableAll[row][3] }} </td>
+
+                            {% if shaftTableAll[row][4] == 3 %}
+                            <td> {{ shaftTableAll[row][5] }} </td>
+                            <td> {{ shaftTableAll[row][6] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTableAll[row][4] == 1 %}
+                            <td> {{ shaftTableAll[row][5] }} </td>
+                            <td> {{ shaftTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ shaftTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="shaftAllButton" class="center">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ shaftTableAll[row][1] }}&last={{ shaftLast }}&line=shaft"
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        {% elif shaftListAll[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> {{ shaftTableAll[row][0] }} </td>
+                            <td rowspan="2"> {{ shaftTableAll[row][2] }} </td>
+                            <td rowspan="2" class="text-left"> {{ shaftTableAll[row][3] }} </td>
+
+                            {% if shaftTableAll[row][4] == 3 %}
+                            <td> {{ shaftTableAll[row][5] }} </td>
+                            <td> {{ shaftTableAll[row][6] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTableAll[row][4] == 1 %}
+                            <td> {{ shaftTableAll[row][5] }} </td>
+                            <td> {{ shaftTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ shaftTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td id="shaftAllButton" rowspan="2">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ shaftTableAll[row][1] }}&last={{ shaftLast }}&line=shaft"
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        <tr class="trow">
+                            {% if shaftTableAll[row+1][4] == 3 %}
+                            <td> {{ shaftTableAll[row+1][5] }} </td>
+                            <td> {{ shaftTableAll[row+1][6] }} </td>
+                            <td> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTableAll[row+1][4] == 1 %}
+                            <td> {{ shaftTableAll[row+1][5] }} </td>
+                            <td> {{ shaftTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td rowspan="3"> {{ shaftTableAll[row][0] }} </td>
+                            <td rowspan="3"> {{ shaftTableAll[row][2] }} </td>
+                            <td rowspan="3" class="text-left"> {{ shaftTableAll[row][3] }} </td>
+
+
+                            {% if shaftTableAll[row][4] == 3 %}
+                            <td> {{ shaftTableAll[row][5] }} </td>
+                            <td> {{ shaftTableAll[row][6] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> {{ shaftTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTableAll[row][4] == 1 %}
+                            <td> {{ shaftTableAll[row][5] }} </td>
+                            <td> {{ shaftTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ shaftTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="shaftAllButton"  rowspan="3">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ shaftTableAll[row][1] }}&last={{ shaftLast }}&line=shaft" 
+                                    class="btn btn-primary">Add</button>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if shaftTableAll[row+1][4] == 3 %}
+                            <td> {{ shaftTableAll[row+1][5] }} </td>
+                            <td> {{ shaftTableAll[row+1][6] }} </td>
+                            <td> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTableAll[row+1][4] == 1 %}
+                            <td> {{ shaftTableAll[row+1][5] }} </td>
+                            <td> {{ shaftTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ shaftTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if shaftTableAll[row+2][4] == 3 %}
+                            <td> {{ shaftTableAll[row+2][5] }} </td>
+                            <td> {{ shaftTableAll[row+2][6] }} </td>
+                            <td> {{ shaftTableAll[row+2][7] }} </td>
+                            <td> {{ shaftTableAll[row+2][7] }} </td>
+                            <td> {{ shaftTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif shaftTableAll[row+2][4] == 1 %}
+                            <td> {{ shaftTableAll[row+2][5] }} </td>
+                            <td> {{ shaftTableAll[row+2][6] }} </td>
+                            <td colspan="3"> {{ shaftTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="bodyTab" class="container tab-pane">
+
+                <table class="table table-bordered">
+                    <thead class="center">
+                        <tr>
+                            <th></th>
+                            <th>Owner</th>
+                            <th>#</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in bodySequence %}
+                        {% if bodyList[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> 
+                                <a href="/moveWiUp?id={{ bodyTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=body"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ bodyTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=body"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td> {{ bodyTable[row][0] }} </td>
+                            <td> {{ bodyTable[row][1] }} </td>
+                            <td> {{ bodyTable[row][2] }} </td>
+                            <td class="text-left"> {{ bodyTable[row][3] }} </td>
+
+
+                            {% if bodyTable[row][4] == 3 %}
+                            <td> {{ bodyTable[row][5] }} </td>
+                            <td> {{ bodyTable[row][6] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTable[row][4] == 1 %}
+                            <td> {{ bodyTable[row][5] }} </td>
+                            <td> {{ bodyTable[row][6] }} </td>
+                            <td colspan="3"> {{ bodyTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ bodyTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=body">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+
+                        </tr>
+
+                        {% elif bodyList[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> 
+                                <a href="/moveWiUp?id={{ bodyTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=body"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ bodyTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=body"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="2"> {{ bodyTable[row][0] }} </td>
+                            <td rowspan="2"> {{ bodyTable[row][1] }} </td>
+                            <td rowspan="2"> {{ bodyTable[row][2] }} </td>
+                            <td class="text-left" rowspan="2"> {{ bodyTable[row][3] }} </td>
+
+                            {% if bodyTable[row][4] == 3 %}
+                            <td> {{ bodyTable[row][5] }} </td>
+                            <td> {{ bodyTable[row][6] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTable[row][4] == 1 %}
+                            <td> {{ bodyTable[row][5] }} </td>
+                            <td> {{ bodyTable[row][6] }} </td>
+                            <td colspan="3"> {{ bodyTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td rowspan="2" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ bodyTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=body">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if bodyTable[row+1][4] == 3 %}
+                            <td> {{ bodyTable[row+1][5] }} </td>
+                            <td> {{ bodyTable[row+1][6] }} </td>
+                            <td> {{ bodyTable[row+1][7] }} </td>
+                            <td> {{ bodyTable[row+1][7] }} </td>
+                            <td> {{ bodyTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTable[row+1][4] == 1 %}
+                            <td> {{ bodyTable[row+1][5] }} </td>
+                            <td> {{ bodyTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ bodyTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td style="vertical-align : middle;text-align:center;" rowspan="3">
+                                <a href="/moveWiUp?id={{ bodyTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=body"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ bodyTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}&line=body"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="3"> {{ bodyTable[row][0] }} </td>
+                            <td rowspan="3"> {{ bodyTable[row][1] }} </td>
+                            <td rowspan="3"> {{ bodyTable[row][2] }} </td>
+                            <td class="text-left" rowspan="3"> {{ bodyTable[row][3] }} </td>
+
+                            {% if bodyTable[row][4] == 3 %}
+                            <td> {{ bodyTable[row][5] }} </td>
+                            <td> {{ bodyTable[row][6] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> {{ bodyTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTable[row][4] == 1 %}
+                            <td> {{ bodyTable[row][5] }} </td>
+                            <td> {{ bodyTable[row][6] }} </td>
+                            <td colspan="3"> {{ bodyTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td style="vertical-align : middle;text-align:center;" rowspan="3" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ bodyTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=body">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if bodyTable[row+1][4] == 3 %}
+                            <td> {{ bodyTable[row+1][5] }} </td>
+                            <td> {{ bodyTable[row+1][6] }} </td>
+                            <td> {{ bodyTable[row+1][7] }} </td>
+                            <td> {{ bodyTable[row+1][7] }} </td>
+                            <td> {{ bodyTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTable[row+1][4] == 1 %}
+                            <td> {{ bodyTable[row+1][5] }} </td>
+                            <td> {{ bodyTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ bodyTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if bodyTable[row+2][4] == 3 %}
+                            <td> {{ bodyTable[row+2][5] }} </td>
+                            <td> {{ bodyTable[row+2][6] }} </td>
+                            <td> {{ bodyTable[row+2][7] }} </td>
+                            <td> {{ bodyTable[row+2][7] }} </td>
+                            <td> {{ bodyTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTable[row+2][4] == 1 %}
+                            <td> {{ bodyTable[row+2][5] }} </td>
+                            <td> {{ bodyTable[row+2][6] }} </td>
+                            <td colspan="3"> {{ bodyTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <button type="button" id="addBodyWiButton" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Body WI
+                </button>
+                
+                <button type="button" id="hideBodyWiButton" class="btn btn-secondary nodisplay">
+                    Hide Table
+                </button>
+                <br><br>
+
+                <div class="input-group mb-3" id="filterBodyWi">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                    </div>
+                    <input id="filterBodyWiInput" type="text" class="form-control" placeholder="Filter..">
+                </div>
+
+                <table id="bodyWiAll" class="table table-bordered nodisplay">
+                    <thead class=center>
+                        <tr>
+                            <th>Owner</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Add</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in bodySequenceAll %}
+                        {% if bodyListAll[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> {{ bodyTableAll[row][0] }} </td>
+                            <td> {{ bodyTableAll[row][2] }} </td>
+                            <td class="text-left"> {{ bodyTableAll[row][3] }} </td>
+
+                            {% if bodyTableAll[row][4] == 3 %}
+                            <td> {{ bodyTableAll[row][5] }} </td>
+                            <td> {{ bodyTableAll[row][6] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTableAll[row][4] == 1 %}
+                            <td> {{ bodyTableAll[row][5] }} </td>
+                            <td> {{ bodyTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ bodyTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="bodyAllButton" class="center">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ bodyTableAll[row][1] }}&last={{ bodyLast }}&line=body"
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        {% elif bodyListAll[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> {{ bodyTableAll[row][0] }} </td>
+                            <td rowspan="2"> {{ bodyTableAll[row][2] }} </td>
+                            <td rowspan="2" class="text-left"> {{ bodyTableAll[row][3] }} </td>
+
+                            {% if bodyTableAll[row][4] == 3 %}
+                            <td> {{ bodyTableAll[row][5] }} </td>
+                            <td> {{ bodyTableAll[row][6] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTableAll[row][4] == 1 %}
+                            <td> {{ bodyTableAll[row][5] }} </td>
+                            <td> {{ bodyTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ bodyTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td id="bodyAllButton" rowspan="2">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ bodyTableAll[row][1] }}&last={{ bodyLast }}&line=body" 
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        <tr class="trow">
+                            {% if bodyTableAll[row+1][4] == 3 %}
+                            <td> {{ bodyTableAll[row+1][5] }} </td>
+                            <td> {{ bodyTableAll[row+1][6] }} </td>
+                            <td> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTableAll[row+1][4] == 1 %}
+                            <td> {{ bodyTableAll[row+1][5] }} </td>
+                            <td> {{ bodyTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td rowspan="3"> {{ bodyTableAll[row][0] }} </td>
+                            <td rowspan="3"> {{ bodyTableAll[row][2] }} </td>
+                            <td rowspan="3" class="text-left"> {{ bodyTableAll[row][3] }} </td>
+
+
+                            {% if bodyTableAll[row][4] == 3 %}
+                            <td> {{ bodyTableAll[row][5] }} </td>
+                            <td> {{ bodyTableAll[row][6] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> {{ bodyTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTableAll[row][4] == 1 %}
+                            <td> {{ bodyTableAll[row][5] }} </td>
+                            <td> {{ bodyTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ bodyTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="bodyAllButton" style="vertical-align : middle;text-align:center;" rowspan="3">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ bodyTableAll[row][1] }}&last={{ last }}&line=body"
+                                    class="btn btn-primary">Add</button>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if bodyTableAll[row+1][4] == 3 %}
+                            <td> {{ bodyTableAll[row+1][5] }} </td>
+                            <td> {{ bodyTableAll[row+1][6] }} </td>
+                            <td> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTableAll[row+1][4] == 1 %}
+                            <td> {{ bodyTableAll[row+1][5] }} </td>
+                            <td> {{ bodyTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ bodyTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if bodyTableAll[row+2][4] == 3 %}
+                            <td> {{ bodyTableAll[row+2][5] }} </td>
+                            <td> {{ bodyTableAll[row+2][6] }} </td>
+                            <td> {{ bodyTableAll[row+2][7] }} </td>
+                            <td> {{ bodyTableAll[row+2][7] }} </td>
+                            <td> {{ bodyTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif bodyTableAll[row+2][4] == 1 %}
+                            <td> {{ bodyTableAll[row+2][5] }} </td>
+                            <td> {{ bodyTableAll[row+2][6] }} </td>
+                            <td colspan="3"> {{ bodyTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="mainLineTab" class="container tab-pane">
+
+                <table class="table table-bordered">
+                    <thead class="center">
+                        <tr>
+                            <th></th>
+                            <th>Owner</th>
+                            <th>#</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in mainLineSequence %}
+                        {% if mainLineList[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> 
+                                <a href="/moveWiUp?id={{ mainLineTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ mainLineTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td> {{ mainLineTable[row][0] }} </td>
+                            <td> {{ mainLineTable[row][1] }} </td>
+                            <td> {{ mainLineTable[row][2] }} </td>
+                            <td class="text-left"> {{ mainLineTable[row][3] }} </td>
+
+
+                            {% if mainLineTable[row][4] == 3 %}
+                            <td> {{ mainLineTable[row][5] }} </td>
+                            <td> {{ mainLineTable[row][6] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTable[row][4] == 1 %}
+                            <td> {{ mainLineTable[row][5] }} </td>
+                            <td> {{ mainLineTable[row][6] }} </td>
+                            <td colspan="3"> {{ mainLineTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ mainLineTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=main line">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+
+                        </tr>
+
+                        {% elif mainLineList[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> 
+                                <a href="/moveWiUp?id={{ mainLineTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ mainLineTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="2"> {{ mainLineTable[row][0] }} </td>
+                            <td rowspan="2"> {{ mainLineTable[row][1] }} </td>
+                            <td rowspan="2"> {{ mainLineTable[row][2] }} </td>
+                            <td class="text-left" rowspan="2"> {{ mainLineTable[row][3] }} </td>
+
+                            {% if mainLineTable[row][4] == 3 %}
+                            <td> {{ mainLineTable[row][5] }} </td>
+                            <td> {{ mainLineTable[row][6] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTable[row][4] == 1 %}
+                            <td> {{ mainLineTable[row][5] }} </td>
+                            <td> {{ mainLineTable[row][6] }} </td>
+                            <td colspan="3"> {{ mainLineTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td rowspan="2" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ mainLineTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=main line">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if mainLineTable[row+1][4] == 3 %}
+                            <td> {{ mainLineTable[row+1][5] }} </td>
+                            <td> {{ mainLineTable[row+1][6] }} </td>
+                            <td> {{ mainLineTable[row+1][7] }} </td>
+                            <td> {{ mainLineTable[row+1][7] }} </td>
+                            <td> {{ mainLineTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTable[row+1][4] == 1 %}
+                            <td> {{ mainLineTable[row+1][5] }} </td>
+                            <td> {{ mainLineTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ mainLineTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td style="vertical-align : middle;text-align:center;" rowspan="3">
+                                <a href="/moveWiUp?id={{ mainLineTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ mainLineTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="3"> {{ mainLineTable[row][0] }} </td>
+                            <td rowspan="3"> {{ mainLineTable[row][1] }} </td>
+                            <td rowspan="3"> {{ mainLineTable[row][2] }} </td>
+                            <td class="text-left" rowspan="3"> {{ mainLineTable[row][3] }} </td>
+
+                            {% if mainLineTable[row][4] == 3 %}
+                            <td> {{ mainLineTable[row][5] }} </td>
+                            <td> {{ mainLineTable[row][6] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> {{ mainLineTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTable[row][4] == 1 %}
+                            <td> {{ mainLineTable[row][5] }} </td>
+                            <td> {{ mainLineTable[row][6] }} </td>
+                            <td colspan="3"> {{ mainLineTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td style="vertical-align : middle;text-align:center;" rowspan="3" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ mainLineTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=main line">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if mainLineTable[row+1][4] == 3 %}
+                            <td> {{ mainLineTable[row+1][5] }} </td>
+                            <td> {{ mainLineTable[row+1][6] }} </td>
+                            <td> {{ mainLineTable[row+1][7] }} </td>
+                            <td> {{ mainLineTable[row+1][7] }} </td>
+                            <td> {{ mainLineTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTable[row+1][4] == 1 %}
+                            <td> {{ mainLineTable[row+1][5] }} </td>
+                            <td> {{ mainLineTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ mainLineTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if mainLineTable[row+2][4] == 3 %}
+                            <td> {{ mainLineTable[row+2][5] }} </td>
+                            <td> {{ mainLineTable[row+2][6] }} </td>
+                            <td> {{ mainLineTable[row+2][7] }} </td>
+                            <td> {{ mainLineTable[row+2][7] }} </td>
+                            <td> {{ mainLineTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTable[row+2][4] == 1 %}
+                            <td> {{ mainLineTable[row+2][5] }} </td>
+                            <td> {{ mainLineTable[row+2][6] }} </td>
+                            <td colspan="3"> {{ mainLineTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <button type="button" id="addShaftWiButton" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Shaft WI
+                </button>
+                
+                <button type="button" id="hideShaftWiButton" class="btn btn-secondary nodisplay">
+                    Hide Table
+                </button>
+                <br><br>
+
+                <div class="input-group mb-3" id="filterShaftWi">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                    </div>
+                    <input id="filterWi" type="text" class="form-control" placeholder="Filter..">
+                </div>
+
+                <table id="mainLineWiAll" class="table table-bordered nodisplay">
+                    <thead class=center>
+                        <tr>
+                            <th>Owner</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Add</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in mainLineSequenceAll %}
+                        {% if mainLineListAll[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> {{ mainLineTableAll[row][0] }} </td>
+                            <td> {{ mainLineTableAll[row][2] }} </td>
+                            <td class="text-left"> {{ mainLineTableAll[row][3] }} </td>
+
+                            {% if mainLineTableAll[row][4] == 3 %}
+                            <td> {{ mainLineTableAll[row][5] }} </td>
+                            <td> {{ mainLineTableAll[row][6] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTableAll[row][4] == 1 %}
+                            <td> {{ mainLineTableAll[row][5] }} </td>
+                            <td> {{ mainLineTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ mainLineTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="mainLineAllButton" class="center">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ mainLineTableAll[row][1] }}&last={{ mainLineLast }}&line=main line"
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        {% elif mainLineListAll[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> {{ mainLineTableAll[row][0] }} </td>
+                            <td rowspan="2"> {{ mainLineTableAll[row][2] }} </td>
+                            <td rowspan="2" class="text-left"> {{ mainLineTableAll[row][3] }} </td>
+
+                            {% if mainLineTableAll[row][4] == 3 %}
+                            <td> {{ mainLineTableAll[row][5] }} </td>
+                            <td> {{ mainLineTableAll[row][6] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTableAll[row][4] == 1 %}
+                            <td> {{ mainLineTableAll[row][5] }} </td>
+                            <td> {{ mainLineTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ mainLineTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td id="mainLineAllButton" rowspan="2">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ mainLineTableAll[row][1] }}&last={{ mainLineLast }}&line=main line" 
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        <tr class="trow">
+                            {% if mainLineTableAll[row+1][4] == 3 %}
+                            <td> {{ mainLineTableAll[row+1][5] }} </td>
+                            <td> {{ mainLineTableAll[row+1][6] }} </td>
+                            <td> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTableAll[row+1][4] == 1 %}
+                            <td> {{ mainLineTableAll[row+1][5] }} </td>
+                            <td> {{ mainLineTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td rowspan="3"> {{ mainLineTableAll[row][0] }} </td>
+                            <td rowspan="3"> {{ mainLineTableAll[row][2] }} </td>
+                            <td rowspan="3" class="text-left"> {{ mainLineTableAll[row][3] }} </td>
+
+
+                            {% if mainLineTableAll[row][4] == 3 %}
+                            <td> {{ mainLineTableAll[row][5] }} </td>
+                            <td> {{ mainLineTableAll[row][6] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> {{ mainLineTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTableAll[row][4] == 1 %}
+                            <td> {{ mainLineTableAll[row][5] }} </td>
+                            <td> {{ mainLineTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ mainLineTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="mainLineAllButton" style="vertical-align : middle;text-align:center;" rowspan="3">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ mainLineTableAll[row][1] }}&last={{ mainLineLast }}&line=main line" 
+                                    class="btn btn-primary">Add</button>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if mainLineTableAll[row+1][4] == 3 %}
+                            <td> {{ mainLineTableAll[row+1][5] }} </td>
+                            <td> {{ mainLineTableAll[row+1][6] }} </td>
+                            <td> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTableAll[row+1][4] == 1 %}
+                            <td> {{ mainLineTableAll[row+1][5] }} </td>
+                            <td> {{ mainLineTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ mainLineTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if mainLineTableAll[row+2][4] == 3 %}
+                            <td> {{ mainLineTableAll[row+2][5] }} </td>
+                            <td> {{ mainLineTableAll[row+2][6] }} </td>
+                            <td> {{ mainLineTableAll[row+2][7] }} </td>
+                            <td> {{ mainLineTableAll[row+2][7] }} </td>
+                            <td> {{ mainLineTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif mainLineTableAll[row+2][4] == 1 %}
+                            <td> {{ mainLineTableAll[row+2][5] }} </td>
+                            <td> {{ mainLineTableAll[row+2][6] }} </td>
+                            <td colspan="3"> {{ mainLineTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="packTab" class="container tab-pane">
+
+                <table class="table table-bordered">
+                    <thead class="center">
+                        <tr>
+                            <th></th>
+                            <th>Owner</th>
+                            <th>#</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in packSequence %}
+                        {% if packList[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> 
+                                <a href="/moveWiUp?id={{ packTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ packTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td> {{ packTable[row][0] }} </td>
+                            <td> {{ packTable[row][1] }} </td>
+                            <td> {{ packTable[row][2] }} </td>
+                            <td class="text-left"> {{ packTable[row][3] }} </td>
+
+
+                            {% if packTable[row][4] == 3 %}
+                            <td> {{ packTable[row][5] }} </td>
+                            <td> {{ packTable[row][6] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTable[row][4] == 1 %}
+                            <td> {{ packTable[row][5] }} </td>
+                            <td> {{ packTable[row][6] }} </td>
+                            <td colspan="3"> {{ packTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ packTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=pack">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        {% elif packList[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> 
+                                <a href="/moveWiUp?id={{ packTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ packTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="2"> {{ packTable[row][0] }} </td>
+                            <td rowspan="2"> {{ packTable[row][1] }} </td>
+                            <td rowspan="2"> {{ packTable[row][2] }} </td>
+                            <td class="text-left" rowspan="2"> {{ packTable[row][3] }} </td>
+
+                            {% if packTable[row][4] == 3 %}
+                            <td> {{ packTable[row][5] }} </td>
+                            <td> {{ packTable[row][6] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTable[row][4] == 1 %}
+                            <td> {{ packTable[row][5] }} </td>
+                            <td> {{ packTable[row][6] }} </td>
+                            <td colspan="3"> {{ packTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td rowspan="2" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ packTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=pack">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if packTable[row+1][4] == 3 %}
+                            <td> {{ packTable[row+1][5] }} </td>
+                            <td> {{ packTable[row+1][6] }} </td>
+                            <td> {{ packTable[row+1][7] }} </td>
+                            <td> {{ packTable[row+1][7] }} </td>
+                            <td> {{ packTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTable[row+1][4] == 1 %}
+                            <td> {{ packTable[row+1][5] }} </td>
+                            <td> {{ packTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ packTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td rowspan="3">
+                                <a href="/moveWiUp?id={{ packTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-up fa-2x"></i></a>
+                                <a href="/moveWiDn?id={{ packTable[row][8] }}&wipId={{ wipId }}&wipNum={{ wipNum }}"><i class="fas fa-arrow-circle-down fa-2x"></i></a>
+                            </td>
+                            <td rowspan="3"> {{ packTable[row][0] }} </td>
+                            <td rowspan="3"> {{ packTable[row][1] }} </td>
+                            <td rowspan="3"> {{ packTable[row][2] }} </td>
+                            <td class="text-left" rowspan="3"> {{ packTable[row][3] }} </td>
+
+                            {% if packTable[row][4] == 3 %}
+                            <td> {{ packTable[row][5] }} </td>
+                            <td> {{ packTable[row][6] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> {{ packTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTable[row][4] == 1 %}
+                            <td> {{ packTable[row][5] }} </td>
+                            <td> {{ packTable[row][6] }} </td>
+                            <td colspan="3"> {{ packTable[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td rowspan="3" class="center">
+                                <a class="minus" href="/deleteWiFromWip?id={{ packTable[row][8] }}&wipNum={{ wipNum }}&wipId= {{ wipId }}&line=pack">
+                                <i class="fas fa-minus"></i></a>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if packTable[row+1][4] == 3 %}
+                            <td> {{ packTable[row+1][5] }} </td>
+                            <td> {{ packTable[row+1][6] }} </td>
+                            <td> {{ packTable[row+1][7] }} </td>
+                            <td> {{ packTable[row+1][7] }} </td>
+                            <td> {{ packTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTable[row+1][4] == 1 %}
+                            <td> {{ packTable[row+1][5] }} </td>
+                            <td> {{ packTable[row+1][6] }} </td>
+                            <td colspan="3"> {{ packTable[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if packTable[row+2][4] == 3 %}
+                            <td> {{ packTable[row+2][5] }} </td>
+                            <td> {{ packTable[row+2][6] }} </td>
+                            <td> {{ packTable[row+2][7] }} </td>
+                            <td> {{ packTable[row+2][7] }} </td>
+                            <td> {{ packTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTable[row+2][4] == 1 %}
+                            <td> {{ packTable[row+2][5] }} </td>
+                            <td> {{ packTable[row+2][6] }} </td>
+                            <td colspan="3"> {{ packTable[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <button type="button" id="addShaftWiButton" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Shaft WI
+                </button>
+                
+                <button type="button" id="hideShaftWiButton" class="btn btn-secondary nodisplay">
+                    Hide Table
+                </button>
+                <br><br>
+
+                <div class="input-group mb-3" id="filterShaftWi">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-filter"></i></span>
+                    </div>
+                    <input id="filterWi" type="text" class="form-control" placeholder="Filter..">
+                </div>
+
+                <table id="packWiAll" class="table table-bordered nodisplay">
+                    <thead class=center>
+                        <tr>
+                            <th>Owner</th>
+                            <th>MFG Cell</th>
+                            <th>Work Instruction</th>
+                            <th>Description</th>
+                            <th>Instrument</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>Approved</th>
+                            <th>Add</th>
+                        </tr>
+                    </thead>
+                    <tbody class="center small">
+                        {% for row in packSequenceAll %}
+                        {% if packListAll[loop.index0] == 1 %}
+                        <tr class="trow">
+                            <td> {{ packTableAll[row][0] }} </td>
+                            <td> {{ packTableAll[row][2] }} </td>
+                            <td class="text-left"> {{ packTableAll[row][3] }} </td>
+
+                            {% if packTableAll[row][4] == 3 %}
+                            <td> {{ packTableAll[row][5] }} </td>
+                            <td> {{ packTableAll[row][6] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTableAll[row][4] == 1 %}
+                            <td> {{ packTableAll[row][5] }} </td>
+                            <td> {{ packTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ packTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="packAllButton" class="center">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ packTableAll[row][1] }}&last={{ packLast }}&line=pack"
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        {% elif packListAll[loop.index0] == 2 %}
+                        <tr class="trow">
+                            <td rowspan="2"> {{ packTableAll[row][0] }} </td>
+                            <td rowspan="2"> {{ packTableAll[row][2] }} </td>
+                            <td rowspan="2" class="text-left"> {{ packTableAll[row][3] }} </td>
+
+                            {% if packTableAll[row][4] == 3 %}
+                            <td> {{ packTableAll[row][5] }} </td>
+                            <td> {{ packTableAll[row][6] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTableAll[row][4] == 1 %}
+                            <td> {{ packTableAll[row][5] }} </td>
+                            <td> {{ packTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ packTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                            <td id="packAllButton" rowspan="2">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ packTableAll[row][1] }}&last={{ packLast }}&line=pack" 
+                                    class="btn btn-primary">Add</button>
+                            </td>
+
+                        </tr>
+
+                        <tr class="trow">
+                            {% if packTableAll[row+1][4] == 3 %}
+                            <td> {{ packTableAll[row+1][5] }} </td>
+                            <td> {{ packTableAll[row+1][6] }} </td>
+                            <td> {{ packTableAll[row+1][7] }} </td>
+                            <td> {{ packTableAll[row+1][7] }} </td>
+                            <td> {{ packTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTableAll[row+1][4] == 1 %}
+                            <td> {{ packTableAll[row+1][5] }} </td>
+                            <td> {{ packTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ packTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% else %}
+                        <tr class="trow">
+                            <td rowspan="3"> {{ packTableAll[row][0] }} </td>
+                            <td rowspan="3"> {{ packTableAll[row][2] }} </td>
+                            <td rowspan="3" class="text-left"> {{ packTableAll[row][3] }} </td>
+
+
+                            {% if packTableAll[row][4] == 3 %}
+                            <td> {{ packTableAll[row][5] }} </td>
+                            <td> {{ packTableAll[row][6] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> {{ packTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTableAll[row][4] == 1 %}
+                            <td> {{ packTableAll[row][5] }} </td>
+                            <td> {{ packTableAll[row][6] }} </td>
+                            <td colspan="3"> {{ packTableAll[row][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+
+                            <td id="packAllButton" style="vertical-align : middle;text-align:center;" rowspan="3">
+                                <a href="/addWiToWip?wipNum={{ wipNum }}&wipId={{ wipId }}&inspectionId={{ packTableAll[row][1] }}&last={{ packLast }}&line=pack" 
+                                    class="btn btn-primary">Add</button>
+                            </td>
+                        </tr>
+
+                        <tr class="trow">
+                            {% if packTableAll[row+1][4] == 3 %}
+                            <td> {{ packTableAll[row+1][5] }} </td>
+                            <td> {{ packTableAll[row+1][6] }} </td>
+                            <td> {{ packTableAll[row+1][7] }} </td>
+                            <td> {{ packTableAll[row+1][7] }} </td>
+                            <td> {{ packTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTableAll[row+1][4] == 1 %}
+                            <td> {{ packTableAll[row+1][5] }} </td>
+                            <td> {{ packTableAll[row+1][6] }} </td>
+                            <td colspan="3"> {{ packTableAll[row+1][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> </td>
+
+                            {% endif %}
+                        </tr>
+
+                        <tr class="trow">
+                            {% if packTableAll[row+2][4] == 3 %}
+                            <td> {{ packTableAll[row+2][5] }} </td>
+                            <td> {{ packTableAll[row+2][6] }} </td>
+                            <td> {{ packTableAll[row+2][7] }} </td>
+                            <td> {{ packTableAll[row+2][7] }} </td>
+                            <td> {{ packTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% elif packTableAll[row+2][4] == 1 %}
+                            <td> {{ packTableAll[row+2][5] }} </td>
+                            <td> {{ packTableAll[row+2][6] }} </td>
+                            <td colspan="3"> {{ packTableAll[row+2][7] }} </td>
+                            <td> </td>
+
+                            {% else %}
+                            <td colspan="5"> N/A </td>
+                            <td> test </td>
+
+                            {% endif %}
+                        </tr>
+
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="revTab" class="container tab-pane">
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

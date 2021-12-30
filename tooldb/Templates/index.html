@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <h3 class="text-white">Fox Tooling Database</h3>
+</nav>
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/tools">Tools</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/wi">Work Instructions</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/wip">WIP Travelers</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Process & Tooling</a>
+    </li>
+  </ul>
+
+</nav>
+<div class="container pt-5 pb-5">
+  <br><br>
+  <h4 class="text-center">Welcome to the Fox Tooling Database!</h4>
+  <br><br>
+</div>
+<div class="container">
+  <img src="{{ url_for('static',filename='foxlogo.png')}}" class="mx-auto d-block" style="width:50%">
+
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% if(invalid==1): %}
+<script>
+  $(document).ready(function () {
+    $('.nav-tabs a[href="#addWip"]').tab('show');
+  });
+</script>
+{% endif %}
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <h3 class="text-white">Fox Tooling Database</h3>
+</nav>
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/tools">Tools</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/wi">Work Instructions</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">WIP Travelers</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Process & Tooling</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container mt-3">
+  <h2>WIP Travelers</h2>
+  <br>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#search">Search WIPs</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#addWip">Add WIP</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div id="search" class="container tab-pane active"> <br>
+      <div class="container p-4">
+        <form action="#">
+          <div class="input-group mb-3">
+            <br>
+            <input type="text" id="wipSearch" class="form-control" placeholder="Enter WIP Number" autocomplete="off">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="container">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>WIP Number</th>
+              <th>Revision</th>
+            </tr>
+          </thead>
+          <tbody id="wipSearchBody">
+            {% for row in wipTable %}
+            <tr>
+              <td><a href="/wipEdit?wipNum={{ row[1] }}&wipId={{ row[0] }}" target="_blank">{{ row[1] }}</a></td>
+              <td>{{ row[2] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="addWip" class="container tab-pane fade"><br>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+          <form action="/addWipSubmit">
+            <div class="form-group row">
+              <label for="wipNum" class="col-sm-3 col-form-label">WIP Number:</label>
+              <div class="col-sm-9">
+                <input type="text" name="wipNum" class="form-control" placeholder="Enter WIP Number" autocomplete="off"
+                  required>
+                {% if invalid==1: %}
+                <div class="is-invalid">The WIP number entered is in use.</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="wipRev" class="col-sm-3 col-form-label">Revision:</label>
+              <div class="col-sm-9">
+                <input type="text" name="wipRev" class="form-control" placeholder="Enter Revision" autocomplete="off"
+                  required>
+              </div>
+            </div>
+            <div class="buttons">
+              <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </div>
+
+          </form>
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}

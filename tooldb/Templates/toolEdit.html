@@ -1,0 +1,328 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<script>
+  $(document).ready(function () {
+    $("#deleteToolEdit").click(function () {
+      if (confirm("Are You Sure You Want To Delete This Tool?")) {
+        window.location.replace("/deleteTool?toolId={{ toolTable[0][0] }}");
+      }
+    });
+
+    {% if toolTable[0][4] %}
+      $("#toolObsolete2").prop("checked", true );
+    {% else %}
+      $("#toolObsolete1").prop("checked", true );
+    {% endif %}
+
+    {% if toolTable[0][5] %}
+      var test = true
+      $("#toolInventory").prop("checked", true );
+    {% endif %}
+
+    {% if toolTable[0][6] %}
+      $("#toolIssue").prop("checked", true );
+    {% endif %}
+    
+    $('#updateTool').on('submit', function(event){
+      
+      var inventory;
+      var issue;
+      if ($("input[name='toolInventory']").is(':checked')){
+        inventory = 1;
+      } else {
+        inventory = 0;
+      }
+      if ($("input[name='toolIssue']").is(':checked')){
+        issue = 1;
+      } else {
+        issue = 0;
+      }
+
+      $.ajax({
+        data : {
+          id : $("input[name='toolId']").val(),
+          number : $("input[name='toolNum']").val(),
+          description : $("input[name='toolDesc']").val(),
+          location : $("input[name='toolLoc']").val(),
+          obsolete : $("input[name='toolObsolete']:checked").val(),
+          inventory : inventory,
+          issue : issue           
+        },
+        type : 'GET',
+        url : '/updateTool'
+      })
+      .done(function(data) {
+        $('#successAlert').text(data.success + ' Changes Saved Sucessfully!').show();
+        $('#successAlert *').show();
+        $("#saveToolEdit").hide();
+      })
+
+      event.preventDefault();
+    })
+  });
+</script>
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <h3 class="text-white">Fox Tooling Database</h3>
+</nav>
+
+<form action="/updateTool" id="updateTool">
+<div class="container pt-3">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Tool Edit: {{ toolTable[0][1] }}</h3>
+    </div>
+    <div class="col-sm-6">
+      <div class="buttons">
+        <button id="deleteToolEdit" type="button" class="btn btn-danger"><i class="fas fa-trash"></i> </button>
+        <button id="saveToolEdit" type="submit" class="btn btn-primary btn nodisplay"><i class="fas fa-save"></i>
+        </button>
+        <button id="closeToolEdit" class="btn btn-secondary btn" onclick="window.close()"><i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id = "successAlert"  class="container alert alert-success alert-dismissible fade show" style = "display:none;">
+  <button type="button" class="close" data-dismiss="alert" style = "display:none;">&times;</button>
+</div>
+
+<div class="container pt-3 border rounded shadow" style="margin-top:15px">
+  
+    <div class="row">
+      <div class="col-sm-12">
+        <h5>Details</h5>
+      </div>
+    </div>
+    <br>
+
+    <input type="hidden" name="toolId" value="{{toolTable[0][0]}}">
+
+    <div class="form-group row">
+      <label for="toolNum" class="col-sm-2 col-form-label text-right">Tool Number</label>
+      <div class="col-sm-9">
+        <input type="text" name="toolNum" class="form-control" value="{{toolTable[0][1]}}" autocomplete="off" readonly="readonly">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="toolDesc" class="col-sm-2 col-form-label text-right">Description</label>
+      <div class="col-sm-9">
+        <input type="text" name="toolDesc" class="form-control" value="{{toolTable[0][2]}}" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="toolLoc" class="col-sm-2 col-form-label text-right">Location</label>
+      <div class="col-sm-9">
+        <input type="text" name="toolLoc" class="form-control" value="{{toolTable[0][3]}}" autocomplete="off">
+      </div>
+    </div>
+
+    <fieldset class="form-group">
+      <div class="row">
+        <legend class="col-form-label col-sm-2 pt-0 text-right">Status</legend>
+        <div class="col-sm-10">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="toolObsolete" id="toolObsolete1" value=0>
+            <label class="form-check-label" for="gridRadios1">
+              In Use
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="toolObsolete" id="toolObsolete2" value=1>
+            <label class="form-check-label" for="gridRadios2">
+              Obsolete
+            </label>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <div class="form-group row">
+      <div class="col-sm-2 text-right">Flag</div>
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="toolInventory" name="toolInventory" value=1>
+          <label class="form-check-label" for="gridCheck1">
+            Low Inventory
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="toolIssue" name = "toolIssue" value=1>
+          <label class="form-check-label" for="gridCheck1">
+            Tool Issue
+          </label>
+        </div>
+      </div>
+    </div>
+
+
+  
+</div>
+</form>
+
+<div class="container pt-3 pb-3 border rounded shadow" style="margin-top:30px">
+
+  <h5>Associated Work Instructions</h5>
+  <table class="table table-bordered topMargin">
+    <thead>
+      <tr>
+        <th>Work Instruction Number</th>
+        <th>Work Instruction Description</th>
+        <th class="center"><i class="fas fa-trash"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in wiTable %}
+      <tr>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td class="center">
+          <a onclick="return confirm('Are you sure you want to remove the tool?')"
+            href="/deleteWiFromTool?wiId={{ row[0] }}&toolId={{ toolTable[0][0] }}&toolNum={{ toolTable[0][1] }}" class="minus"> 
+            <i class="fas fa-minus"></i>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+  <button type="button" id="addWiButton" class="btn btn-outline-primary">
+    <i class="fas fa-plus"></i> Add WI
+  </button>
+
+  <button type="button" id="showLogButton" class="btn btn-outline-secondary float-right">
+    <i class="fas fa-plus"></i> Archived WI
+  </button>
+
+  <button type="button" id="hideWiTable" class="btn btn-secondary nodisplay">
+    Hide Table
+  </button>
+
+  <button type="button" id="hideLogTable" class="btn btn-outline-secondary float-right nodisplay">
+    Hide Table
+  </button>
+
+  <br>
+
+  <div class="input-group mb-3" id="filterWiGroup" style="margin-top:15px">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="fas fa-filter"></i></span>
+    </div>
+    <input id="filterWi" type="text" class="form-control" placeholder="Filter..">
+  </div>
+
+  <table id="wiAll" class="table table-bordered nodisplay">
+    <thead>
+      <tr>
+        <th>Work Instruction Number</th>
+        <th>Work Instruction Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="wiAllBody">
+      {% for row in wiAllTable %}
+      <tr>
+        <td>{{ row[1] }}</td>
+        <td>{{ row[2] }}</td>
+        <td id="wiAllButton">
+          <a href="/addWiToTool?wiId={{ row[0] }}&toolId={{ toolTable[0][0] }}&toolNum={{ toolTable[0][1] }}"
+            class="btn btn-outline-primary">Add WI</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br>
+  <table id="wiLogTable" class="table table-bordered nodisplay">
+    <thead>
+      <tr>
+        <th>Work Instruction Number</th>
+        <th>Work Instruction Description</th>
+        <th>Date Removed</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+
+</div>
+
+<div class="container pt-3 pb-3 border rounded shadow" style="margin-top:30px">
+  <h5>Notes </h5>
+  <table class="table table-bordered topMargin">
+    <thead>
+      <tr>
+        <th>Note</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th class="center"><i class="fas fa-trash"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in notesTable%}
+        <tr>
+          <td> {{ row[2] }} </td>
+          <td> {{ row[3] }} </td>
+          <td> {{ row[4] }} </td>
+          <td class = "center">
+            <a onclick="return confirm('Are you sure you want to remove the note?')"
+            href="/deleteToolNote?noteId={{ row[0] }}&toolNum={{ toolTable[0][1] }}" class="minus"> 
+            <i class="fas fa-minus"></i>
+          </td>
+        </tr>
+      {% endfor %}
+
+
+    </tbody>
+  </table>
+
+
+  <button type="button" id="addToolNoteButton" class="btn btn-outline-primary">
+    <i class="fas fa-plus"></i> Add Note
+  </button>
+  <br>
+
+  <div id="newToolNote" class="nodisplay" style="margin-top:15px">
+    <h6>New Note</h6>
+    <form action="/addToolNote">
+
+      <input type="hidden" name="toolIdNote" value="{{toolTable[0][0]}}">
+      <input type="hidden" name="toolNumNote" value="{{toolTable[0][1]}}">
+
+      <div class="form-group row">
+        <label for="toolNote" class="col-sm-2 col-form-label text-right">Note</label>
+        <div class="col-sm-9">
+          <textarea name="note" class="form-control" rows="3" placeholder="Enter Note" autocomplete="off"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="toolNoteName" class="col-sm-2 col-form-label text-right">Name</label>
+        <div class="col-sm-9">
+          <input type="text" name="name" class="form-control" placeholder="Enter Name" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-10">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+<br><br>
+
+
+{% endblock %}

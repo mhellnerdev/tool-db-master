@@ -1,0 +1,163 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<!-- Script to re-show "Add Tool" tab when redirected from an invalid tool number entry on Add Tool -->
+
+<script>
+{% if(invalid==1): %}
+  $(document).ready(function () {
+    $('.nav-tabs a[href="#addTool"]').tab('show');
+  });
+{% endif %}
+
+
+</script>
+
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <h3 class="text-white">Fox Tooling Database</h3>
+</nav>
+
+<nav class="navbar navbar-expand-sm navbar-light">
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Tools</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/wi">Work Instructions</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/wip">WIP Travelers</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Process & Tooling</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container mt-3">
+  <h2>Tools</h2>
+  <br>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" id="toolTabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#search">Search Tools</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#addTool">Add Tool</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div id="search" class="container tab-pane active"><br>
+      <div class="container p-4">
+        <form action="#">
+          <div class="input-group mb-3">
+            <br>
+            <input type="text" id="toolSearch" class="form-control tableSearch"
+              placeholder="Search by Tool Number, Description, or Location" autocomplete="off">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="toolObsoleteSearch" name="toolObsoleteSearch" value=1>
+            <label class="form-check-label" for="toolObsoleteSearch">
+              Obsolete
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="toolInventorySearch" name="toolInventorySearch" value=1>
+            <label class="form-check-label" for="toolInventorySearch">
+              Low Inventory
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="toolIssueSearch" name="toolIssueSearch" value=1>
+            <label class="form-check-label" for="toolIssueSearch">
+              Tool Issue
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <div class="container">
+        <table class="table"id="toolSearchTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Tool Number</th>
+              <th>Tool Description</th>
+              <th>Tool Location</th>
+            </tr>
+          </thead>
+          <tbody id="toolSearchBody" class="tableBody">
+            {% for row in toolTable %}
+            <tr>
+              <td><a href="/openToolPdf?toolNum={{ row[1] }}"><i class="far fa-file-pdf"></i> </a></td>
+              <td><a href="/toolEdit?toolNum={{ row[1] }}" target="_blank">{{ row[1] }}</a></td>
+              <td>{{ row[2] }}</td>
+              <td>{{ row[3] }}</td>
+              <td class="obs" style="display:none">{{ row[4] }}</td>
+              <td class="inv" style="display:none">{{ row[5] }}</td>
+              <td class="iss" style="display:none">{{ row[6] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="addTool" class="container tab-pane fade"><br>
+      <div class="container p-4">
+
+        <form action="/addToolSubmit" target="_blank">
+
+          <div class="form-group row">
+            <label for="toolNum" class="col-sm-2 col-form-label">Tool Number:</label>
+            <div class="col-sm-10">
+              <input type="text" name="toolNum" class="form-control" placeholder="Enter Tool Number" autocomplete="off"
+                required>
+              {% if invalid==1: %}
+              <div class="is-invalid">The tool number entered is in use.</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="toolDesc" class="col-sm-2 col-form-label">Description:</label>
+            <div class="col-sm-10">
+              <input type="text" name="toolDesc" class="form-control" placeholder="Enter Description" autocomplete="off"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="toolLoc" class="col-sm-2 col-form-label">Location:</label>
+            <div class="col-sm-10">
+              <input type="text" name="toolLoc" class="form-control" placeholder="Enter Location" autocomplete="off"
+                required>
+            </div>
+          </div>
+          <br>
+          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+</script>
+
+{% endblock %}

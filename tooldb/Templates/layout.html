@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Fox Tooling Database</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/bdcbf9305f.js" crossorigin="anonymous"></script>
+  
+  <style>
+  container{
+    background-color:White
+  }
+  .nodisplay {
+    display:none;
+  }
+  .buttons {
+    float: right;
+  }
+  .center {
+    text-align: center;
+  }
+  a.minus:link {
+    color:rgb(100, 100, 100)
+  }
+  a.minus:visited {
+    color:rgb(100, 100, 100)
+  }
+  #bottom {
+    vertical-align:middle;
+  }
+  #newToolNote {
+    overflow: hidden
+  }
+
+  .trow td {
+    vertical-align:middle
+  }
+  h5{
+    border-bottom-style: solid;
+    border-width: 1px;
+    padding-bottom:10px;
+    color:Gray;
+    font-weight: bold
+  }
+  .topMargin{
+    margin-top: 20px;
+  }
+    </style>
+
+  
+
+<script>
+
+
+$(document).ready(function(){
+  $("#filterWiGroup").hide();
+  $("#filterToolGroup").hide();
+  $("#filterShaftWi").hide();
+  $("#filterBodyWi").hide();
+ 
+//On Tool Edit, when the add WI button is clicked, display the WI table, filter input, and the hide table button, and hide the add Wi button
+  $("#addWiButton").click(function(){
+    $("#wiAll").show();
+    $("#filterWiGroup").show();
+    $("#hideWiTable").show();
+    $("#addWiButton").hide();
+  });
+
+//reverse above changes when hide wi table button is clicked
+  $("#hideWiTable").click(function(){
+    $("#wiAll").hide();
+    $("#filterWiGroup").hide();
+    $("#hideWiTable").hide();
+    $("#addWiButton").show();
+  });
+
+//On WI Edit, when the add tool button is clicked, display the tool table, filter input, and the hide table button, and hide the add tool button
+  $("#addToolButton").click(function(){
+    $("#toolAll").show();
+    $("#filterToolGroup").show();
+    $("#hideToolTable").show();
+    $("#addToolButton").hide();
+  });
+
+//reverse above changes when hide tool table button is clicked
+  $("#hideToolTable").click(function(){
+    $("#toolAll").hide();
+    $("#filterToolGroup").hide();
+    $("#hideToolTable").hide();
+    $("#addToolButton").show();
+  });
+
+  $("#addToolNoteButton").click(function(){
+    $("#newToolNote").show();
+    $("#addToolNoteButton").hide();
+  });
+
+  $("#addShaftWiButton").click(function(){
+    $("#shaftWiAll").show();
+    $("#filterShaftWi").show();
+    $("#addShaftWiButton").hide();
+    $("#hideShaftWiButton").show();
+  });
+
+  $("#hideShaftWiButton").click(function(){
+    $("#shaftWiAll").hide();
+    $("#filterShaftWi").hide();
+    $("#addShaftWiButton").show();
+    $("#hideShaftWiButton").hide();
+  });
+
+  $("#addBodyWiButton").click(function(){
+    $("#bodyWiAll").show();
+    $("#filterBodyWi").show();
+    $("#addBodyWiButton").hide();
+    $("#hideBodyWiButton").show();
+  });
+
+  $("#hideBodyWiButton").click(function(){
+    $("#bodyWiAll").hide();
+    $("#filterBodyWi").hide();
+    $("#addBodyWiButton").show();
+    $("#hideBodyWiButton").hide();
+  });
+
+  $("#showLogButton").click(function(){
+    $("#wiLogTable").show();
+    $("#showLogButton").hide();
+    $("#hideLogTable").show();
+  });
+
+  $("#hideLogTable").click(function(){
+    $("#wiLogTable").hide();
+    $("#showLogButton").show();
+    $("#hideLogTable").hide();
+  });
+
+
+//wiEdit: filter contents of add tool table
+  $("#filterTool").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#toolAllBody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+//toolEdit: filter contents of add wi table
+  $("#filterWi").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#wiAllBody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+//tools: filter table contents on search
+  $("#toolSearch").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#toolSearchBody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+  $("#toolObsoleteSearch").change(function() {
+    if(this.checked) {
+      $("#toolSearchBody tr").filter(function() {
+        $(this).toggle($(this).find(".obs").text() == 1)
+      });
+    } else {
+        $("#toolSearchBody tr").toggle();
+    }
+  });
+
+    $("#toolInventorySearch").change(function() {
+    if(this.checked) {
+      $("#toolSearchBody tr").filter(function() {
+        $(this).toggle($(this).find(".inv").text() == 1)
+      });
+    } else {
+        $("#toolSearchBody tr").toggle();
+    }
+  });
+
+    $("#toolIssueSearch").change(function() {
+    if(this.checked) {
+      $("#toolSearchBody tr").filter(function() {
+        $(this).toggle($(this).find(".iss").text() == 1)
+      });
+    } else {
+        $("#toolSearchBody tr").toggle();
+    }
+  });
+
+//wi: filter table contents on search
+  $("#wiSearch").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#wiSearchBody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+//wip: filter table contents on search
+  $("#wipSearch").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#wipSearchBody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+//toolEdit: show save icon when content changes
+  $("#updateTool").on("input", function() {
+    $("#saveToolEdit").show();
+    $("#successAlert").hide();
+  });
+
+//wiEdit: show save icon when content changes
+  $("#updateWi").on("input", function() {
+    $("#saveWiEdit").show();
+  });
+
+//tools, wi, & wip: enable clicking between search & add tabs
+  $(".nav-tabs a").click(function(){
+    $(this).tab('show');
+  });
+
+
+  $('#toolSearchTable tr').each(function(){
+      if($(this).find('.obs').text() == '1'){
+        $(this).addClass('table-secondary');
+      }
+      if($(this).find('.inv').text() == '1'){
+        $(this).addClass('table-warning');
+      }
+      if($(this).find('.iss').text() == '1'){
+        $(this).addClass('table-danger');
+      }
+  });
+
+
+});
+
+
+
+</script>
+
+</head>
+<body class="bg-light">
+
+  {% block body %}{% endblock %}
+
+</body>
+</html>
