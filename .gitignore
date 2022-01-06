@@ -152,4 +152,4 @@ cython_debug/
 #.idea/
 
 .replit
-.db
+*.db
