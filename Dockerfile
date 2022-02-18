@@ -37,18 +37,16 @@ RUN pip install -r requirements.txt
 # copy contents of . or local hosts folder to the WORKDIR on the container
 COPY . /tooldb/
 
-# next line has been commented out, this can be used use this command to run in development mode
+# next line has been commented out, use this command to run in development mode
 # CMD python run.py 
 
-# pass bash script in application root to start PRODUCTION Flask server
+# run bash script to start PRODUCTION Flask server via UWSGI/gunicorn production engine
 CMD ./gunicorn.sh
 
 
 #### NOTES ####
-# this file is currently setup to run the bash script ./gunicorn.sh. this launches the flask server with workers to be be defined. the port definition you cannot have concurrent http requests.
-# docker command to run development mode. you must uncomment the python run.py CMD and comment out the ./gunicorn CMD
-# this exposes port 80 to the localhost's web browser on the defined port that is passed into the app.run
-# docker run -p 80:5000 -e DEBUG=0 <container name>
+# this file is currently setup to run the bash script ./gunicorn.sh. this launches the flask server with multi thread workers to handle requests. with out this you cannot have concurrent http requests.
 
-# docker command to run container mapping to http port and passing environment variable for debug mode
-# docker run -p 80:5000 -e DEBUG=1 <image name>
+# docker command to run container mapping to http port and passing environment variable for debug mode true.
+# this is to be used only when running in development mode
+# docker run -p 80:<port defined in app.run> -e DEBUG=1 <image name>
