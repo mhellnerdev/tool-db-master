@@ -1,5 +1,5 @@
 # pull container from docker hub
-FROM python:3.8.10-alpine
+FROM python:alpine
 
 # set docker OS level env variables
 ENV PYTHONUNBUFFERED 1
