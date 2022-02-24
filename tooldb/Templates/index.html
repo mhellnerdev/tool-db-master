@@ -1,9 +1,7 @@
-{% extends "layout.html" %}
-
-{% block body %}
+{% extends "layout.html" %} {% block body %}
 
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-  <h3 class="text-white">Fox Tooling Database</h3>
+	<h3 class="text-white"><img class="foximg-header" src="{{ url_for('static',filename='foxlogo.png')}}" class="mx-auto d-block" style="width: 8%">  Tooling Database</h3>
 </nav>
 
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
@@ -16,15 +14,15 @@
     <li class="nav-item">
       <a class="nav-link" href="/tools">Tools</a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link" href="/wi">Work Instructions</a>
-    </li>
-    <li class="nav-item">
+    </li> -->
+    <!-- <li class="nav-item">
       <a class="nav-link" href="/wip">WIP Travelers</a>
-    </li>
-    <li class="nav-item">
+    </li> -->
+    <!-- <li class="nav-item">
       <a class="nav-link" href="#">Process & Tooling</a>
-    </li>
+    </li> -->
   </ul>
 
 </nav>
