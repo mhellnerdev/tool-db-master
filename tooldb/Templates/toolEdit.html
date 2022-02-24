@@ -66,7 +66,7 @@
 
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <h3 class="text-white">Fox Tooling Database</h3>
+  <h3 class="text-white"><img class="foximg-header" src="{{ url_for('static',filename='foxlogo.png')}}" class="mx-auto d-block" style="width: 8%">  Tooling Database</h3>
 </nav>
 
 <form action="/updateTool" id="updateTool">
@@ -165,7 +165,7 @@
 </div>
 </form>
 
-<div class="container pt-3 pb-3 border rounded shadow" style="margin-top:30px">
+<!-- <div class="container pt-3 pb-3 border rounded shadow" style="margin-top:30px">
 
   <h5>Associated Work Instructions</h5>
   <table class="table table-bordered topMargin">
@@ -216,7 +216,7 @@
       <span class="input-group-text"><i class="fas fa-filter"></i></span>
     </div>
     <input id="filterWi" type="text" class="form-control" placeholder="Filter..">
-  </div>
+  </div> -->
 
   <table id="wiAll" class="table table-bordered nodisplay">
     <thead>
