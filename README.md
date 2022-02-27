@@ -1,7 +1,7 @@
 # tool-db-master
-flask-app. credit goes to thomas mulrooney for this original codebase.
+flask-app. credit goes to thomas mulrooney for this original codebase. I have ported this to run in docker with gunicorn.
 
 notes:  
 
-master branch - currently looka for a config.json file in the /etc/ directory of the server it is running on.  
+master branch - dockerized version launched with gunicorn for production. tested working on AWS. 
 repl.it branch - the key is added to secrets of the repl.it instance. code is changed to call this new location.
