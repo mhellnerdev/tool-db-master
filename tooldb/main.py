@@ -4,6 +4,8 @@ import sqlite3
 from sqlite3 import Error
 import mysql.connector
 
+from flask_mysqldb import MySQL
+
 # Old Connection string
 # def createConnection(path):
 #     connection = None
@@ -20,11 +22,12 @@ def createConnection(host):
     connection = None
     try:
         connection = mysql.connector.connect(
-            host = "localhost",
-            user = "flask_user",
-            passwd = "flaskpasswd",
-            )
-        print("Connection to SQLite DB successful")
+            user='flask_user_02',
+            password='flaskpasswd',
+            host='127.0.0.1',
+            database='tooldb',
+        )
+        print("Connection to MySQL DB successful")
     except Error as e:
         print(f"The error '{e}' occurred")
     return connection
@@ -66,7 +69,7 @@ def executeReadQueryAll(connection, query):
 # connection = createConnection("tooldb/tooling-db.db")
 
 # old connection string to local sqlite (tooling-db-db)
-connection = createConnection("mysql://flask_user:flaskpasswd@localhost/tool_users")
+connection = createConnection('MYSQL_HOST')
 
 
 @app.route("/")

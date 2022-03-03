@@ -110,38 +110,38 @@ def toolEdit():
     SELECT * FROM tools 
     WHERE tools.number = ? 
     """)
-    queryWi = (""" 
-    SELECT DISTINCT wi.*
-    FROM ((matchToolsWi
-    INNER JOIN tools ON tools.id = matchToolsWi.toolId)
-    INNER JOIN wi ON wi.id = matchToolsWi.wiId)
-    where tools.number = ? """)
-    queryWiAll = (""" 
-    SELECT DISTINCT wi.*
-    FROM ((matchToolsWi
-    INNER JOIN tools ON tools.id = matchToolsWi.toolId)
-    INNER JOIN wi ON wi.id = matchToolsWi.wiId)
-    where tools.number != ? """)
-    queryNotes = ("""
-    SELECT * FROM toolNotes
-    WHERE toolId = ?
-    """)
-    queryLog = ("""
-    SELECT wi.*
-    FROM ((matchToolsWiLog 
-    INNER JOIN tools ON tools.id = matchToolsWiLog.toolId)
-    INNER JOIN wi ON wi.id = matchToolsWiLog.wiId)
-    WHERE toolId = ?    
-    """)
+    # queryWi = (""" 
+    # SELECT DISTINCT wi.*
+    # FROM ((matchToolsWi
+    # INNER JOIN tools ON tools.id = matchToolsWi.toolId)
+    # INNER JOIN wi ON wi.id = matchToolsWi.wiId)
+    # where tools.number = ? """)
+    # queryWiAll = (""" 
+    # SELECT DISTINCT wi.*
+    # FROM ((matchToolsWi
+    # INNER JOIN tools ON tools.id = matchToolsWi.toolId)
+    # INNER JOIN wi ON wi.id = matchToolsWi.wiId)
+    # where tools.number != ? """)
+    # queryNotes = ("""
+    # SELECT * FROM toolNotes
+    # WHERE toolId = ?
+    # """)
+    # queryLog = ("""
+    # SELECT wi.*
+    # FROM ((matchToolsWiLog 
+    # INNER JOIN tools ON tools.id = matchToolsWiLog.toolId)
+    # INNER JOIN wi ON wi.id = matchToolsWiLog.wiId)
+    # WHERE toolId = ?    
+    # """)
 
     toolTable = executeReadQuery(connection, queryTool, (tool,))
     toolId = toolTable[0][0]
     print(toolId)
-    wiTable = executeReadQuery(connection, queryWi, (tool,))
-    wiAllTable = executeReadQuery(connection, queryWiAll, (tool,))
+    # wiTable = executeReadQuery(connection, queryWi, (tool,))
+    # wiAllTable = executeReadQuery(connection, queryWiAll, (tool,))
     notesTable = executeReadQuery(connection, queryNotes, (toolId,))
     logTable = executeReadQuery(connection, queryLog, (toolId,))
-    return render_template("toolEdit.html", toolTable = toolTable, wiTable = wiTable, wiAllTable = wiAllTable, notesTable = notesTable, logTable = logTable)
+    return render_template("toolEdit.html", toolTable = toolTable, notesTable = notesTable, logTable = logTable)
 
 #opens a PDF from a given tool number
 @app.route("/openToolPdf")

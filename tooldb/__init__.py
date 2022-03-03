@@ -13,4 +13,4 @@ app.config['MYSQL_DB'] = 'tooldb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
-from tooldb import main, tools, wi, wip
+from tooldb import main, tools, wip, wi

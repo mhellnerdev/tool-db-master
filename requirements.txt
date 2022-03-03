@@ -3,12 +3,17 @@ cffi==1.14.5
 click==8.0.1
 colorama==0.4.4
 Flask==2.0.1
+Flask-MySQLdb==1.0.1
 Flask-Session==0.3.2
 Flask-WTF==0.15.1
 gunicorn==20.1.0
 itsdangerous==2.0.1
 Jinja2==3.0.1
 MarkupSafe==2.0.1
+mysql-connector==2.2.9
+mysql-connector-python==8.0.28
+mysqlclient==2.1.0
+protobuf==3.19.4
 pycparser==2.20
 six==1.16.0
 Werkzeug==2.0.1
