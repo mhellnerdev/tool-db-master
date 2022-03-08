@@ -122,17 +122,17 @@ def toolEdit():
     # INNER JOIN tools ON tools.id = matchToolsWi.toolId)
     # INNER JOIN wi ON wi.id = matchToolsWi.wiId)
     # where tools.number != ? """)
-    # queryNotes = ("""
-    # SELECT * FROM toolNotes
-    # WHERE toolId = ?
-    # """)
-    # queryLog = ("""
-    # SELECT wi.*
-    # FROM ((matchToolsWiLog 
-    # INNER JOIN tools ON tools.id = matchToolsWiLog.toolId)
-    # INNER JOIN wi ON wi.id = matchToolsWiLog.wiId)
-    # WHERE toolId = ?    
-    # """)
+    queryNotes = ("""
+    SELECT * FROM toolNotes
+    WHERE toolId = ?
+    """)
+    queryLog = ("""
+    SELECT wi.*
+    FROM ((matchToolsWiLog 
+    INNER JOIN tools ON tools.id = matchToolsWiLog.toolId)
+    INNER JOIN wi ON wi.id = matchToolsWiLog.wiId)
+    WHERE toolId = ?    
+    """)
 
     toolTable = executeReadQuery(connection, queryTool, (tool,))
     toolId = toolTable[0][0]

@@ -18,7 +18,7 @@ from flask_mysqldb import MySQL
 
 
 # New connection string
-def createConnection(host):
+def createConnection():
     connection = None
     try:
         connection = mysql.connector.connect(
@@ -69,7 +69,7 @@ def executeReadQueryAll(connection, query):
 # connection = createConnection("tooldb/tooling-db.db")
 
 # old connection string to local sqlite (tooling-db-db)
-connection = createConnection('MYSQL_HOST')
+connection = createConnection()
 
 
 @app.route("/")
