@@ -29,7 +29,7 @@ def addToolSubmit():
     toolNums = [i[0] for i in toolList]
     insert = ("""
     INSERT INTO tools (number, description, location)
-    VALUES (?,?,?)
+    VALUES (%s,%s,%s)
     """)
     if(tool in toolNums):
         return redirect(url_for('tools', invalid = 1))
@@ -51,8 +51,8 @@ def updateTool():
     list = (description, location, obsolete, inventory, issue, id)
     query = ("""
     UPDATE tools
-    SET description = ?, location = ?, obsolete = ?, inventory = ?, issue = ?
-    WHERE id = ?
+    SET description = %s, location = %s, obsolete = %s, inventory = %s, issue = %s
+    WHERE id = %s
     """)
     executeQuery(connection, query, list)
     return jsonify({'success' : number})
@@ -64,8 +64,8 @@ def deleteTool():
     id=int(toolId)
     print(f'id:{id}')
     print(type(id))
-    toolQuery = "DELETE FROM tools WHERE id = ?"
-    matchQuery = "DELETE FROM matchToolsWi WHERE toolId = ?"
+    toolQuery = "DELETE FROM tools WHERE id = %s"
+    matchQuery = "DELETE FROM matchToolsWi WHERE toolId = %s"
     executeQuery(connection, toolQuery, (id,))
     executeQuery(connection, matchQuery, (id,))
     return redirect(url_for('tools'))
@@ -79,7 +79,7 @@ def addWiToTool():
     list = (wiId, toolId)
     query = ("""
     INSERT INTO matchToolsWi (wiId, toolId)
-    VALUES (?,?)
+    VALUES (%s,%s)
     """)
     executeQuery(connection, query, list)
     return redirect(url_for('toolEdit', toolNum=toolNum))
@@ -92,11 +92,11 @@ def deleteWiFromTool():
     toolNum = request.args.get("toolNum")
     query = ("""
     DELETE FROM matchToolsWi
-    WHERE toolId = ? AND wiId = ? 
+    WHERE toolId = %s AND wiId = %s 
     """)
     logQuery = ("""
     INSERT INTO matchToolsWiLog (toolId, wiId)
-    VALUES (?,?)
+    VALUES (%s,%s)
     """)
     executeQuery(connection, query, (toolId, wiId))
     executeQuery(connection, logQuery, (toolId, wiId))
@@ -108,40 +108,17 @@ def toolEdit():
     tool = request.args.get("toolNum")
     queryTool = ("""
     SELECT * FROM tools 
-    WHERE tools.number = ? 
+    WHERE tools.number = %s 
     """)
-    # queryWi = (""" 
-    # SELECT DISTINCT wi.*
-    # FROM ((matchToolsWi
-    # INNER JOIN tools ON tools.id = matchToolsWi.toolId)
-    # INNER JOIN wi ON wi.id = matchToolsWi.wiId)
-    # where tools.number = ? """)
-    # queryWiAll = (""" 
-    # SELECT DISTINCT wi.*
-    # FROM ((matchToolsWi
-    # INNER JOIN tools ON tools.id = matchToolsWi.toolId)
-    # INNER JOIN wi ON wi.id = matchToolsWi.wiId)
-    # where tools.number != ? """)
     queryNotes = ("""
-    SELECT * FROM toolNotes
-    WHERE toolId = ?
+    SELECT * FROM toolnotes
+    WHERE toolId = %s
     """)
-    queryLog = ("""
-    SELECT wi.*
-    FROM ((matchToolsWiLog 
-    INNER JOIN tools ON tools.id = matchToolsWiLog.toolId)
-    INNER JOIN wi ON wi.id = matchToolsWiLog.wiId)
-    WHERE toolId = ?    
-    """)
-
     toolTable = executeReadQuery(connection, queryTool, (tool,))
     toolId = toolTable[0][0]
     print(toolId)
-    # wiTable = executeReadQuery(connection, queryWi, (tool,))
-    # wiAllTable = executeReadQuery(connection, queryWiAll, (tool,))
     notesTable = executeReadQuery(connection, queryNotes, (toolId,))
-    logTable = executeReadQuery(connection, queryLog, (toolId,))
-    return render_template("toolEdit.html", toolTable = toolTable, notesTable = notesTable, logTable = logTable)
+    return render_template("toolEdit.html", toolTable = toolTable, notesTable = notesTable)
 
 #opens a PDF from a given tool number
 @app.route("/openToolPdf")
@@ -172,8 +149,8 @@ def addToolNote():
     dt = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     vals = (id, note, name, dt)
     query = ("""
-    INSERT INTO toolNotes (toolId,note,name,date)
-    values (?,?,?,?)
+    INSERT INTO toolnotes (toolId,note,name,date)
+    values (%s, %s, %s, %s)
     """)
     executeQuery(connection, query, vals)
     return redirect(url_for('toolEdit', toolNum=num))
@@ -182,6 +159,6 @@ def addToolNote():
 def deleteToolNote():
     id = request.args.get('noteId')
     num = request.args.get('toolNum')
-    query = " DELETE FROM toolNotes WHERE id = ?"
+    query = " DELETE FROM toolnotes WHERE id = %s"
     executeQuery(connection, query, (id,))
     return redirect(url_for('toolEdit', toolNum = num))
