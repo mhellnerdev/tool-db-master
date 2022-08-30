@@ -5,4 +5,6 @@ notes:
 
 master branch - dockerized version launched with gunicorn for production. tested working on AWS.
 
+db-decouple branch - dockerized and hooked up to mysql instance
+
 repl.it branch - the key is added to secrets of the repl.it instance. code is changed to call this new location.
