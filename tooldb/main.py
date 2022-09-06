@@ -4,18 +4,7 @@ import sqlite3
 from sqlite3 import Error
 import mysql.connector
 
-# Old Connection string
-# def createConnection(path):
-#     connection = None
-#     try:
-#         connection = sqlite3.connect(path, check_same_thread=False)
-#         print("Connection to SQLite DB successful")
-#     except Error as e:
-#         print(f"The error '{e}' occurred")
-#     return connection
-
-
-# New connection string
+# MySQL connection string
 def createConnection(host):
     connection = None
     try:
@@ -25,7 +14,7 @@ def createConnection(host):
             passwd = "flaskpasswd",
             db = "tool-db-master"
             )
-        print("Connection to MYSQL DB successful")
+        print("Connection to MySQL DB successful")
     except Error as e:
         print(f"The error '{e}' occurred")
     return connection
