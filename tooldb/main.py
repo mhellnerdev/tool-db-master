@@ -1,7 +1,5 @@
 from flask import render_template
 from tooldb import app
-import sqlite3
-from sqlite3 import Error
 import mysql.connector
 
 # MySQL connection string
