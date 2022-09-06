@@ -8,10 +8,6 @@ app = Flask(__name__, template_folder='Templates')
 # app.config['SECRET_KEY'] = config.get('SECRET_KEY')
 app.config['MYSQL_USER'] = 'flask_user'
 app.config['MYSQL_PASSWORD'] = 'flaskpasswd'
-app.config['MYSQL_USER'] = 'flask_user'
-app.config['MYSQL_USER'] = 'flask_user'
-app.config['MYSQL_USER'] = 'flask_user'
-app.config['MYSQL_USER'] = 'flask_user'
 
 
-from tooldb import main, tools, wi, wip
+from tooldb import main, tools

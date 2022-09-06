@@ -23,8 +23,9 @@ def createConnection(host):
             host = "localhost",
             user = "flask_user",
             passwd = "flaskpasswd",
+            db = "tool-db-master"
             )
-        print("Connection to SQLite DB successful")
+        print("Connection to MYSQL DB successful")
     except Error as e:
         print(f"The error '{e}' occurred")
     return connection
