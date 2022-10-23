@@ -2,6 +2,22 @@ from flask import render_template
 from tooldb import app
 import mysql.connector
 
+# # MySQL connection string
+# def createConnection(host):
+#     connection = None
+#     try:
+#         connection = mysql.connector.connect(
+#             host = "localhost",
+#             user = "flask_user",
+#             passwd = "flaskpasswd",
+#             db = "tool-db-master"
+#             )
+#         print("Connection to MySQL DB successful")
+#     except Error as e:
+#         print(f"The error '{e}' occurred")
+#     return connection
+
+
 # MySQL connection string
 def createConnection(host):
     connection = None
@@ -16,6 +32,12 @@ def createConnection(host):
     except Error as e:
         print(f"The error '{e}' occurred")
     return connection
+
+
+
+
+
+
 
 
 def executeQuery(connection, query, input):
@@ -53,7 +75,7 @@ def executeReadQueryAll(connection, query):
 # old connection string to local sqlite (tooling-db-db)
 # connection = createConnection("tooldb/tooling-db.db")
 
-# old connection string to local sqlite (tooling-db-db)
+# new connection to local mysql db (tooling-db-db)
 connection = createConnection("mysql://flask_user:flaskpasswd@localhost/tool_users")
 
 
