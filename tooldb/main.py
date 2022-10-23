@@ -1,6 +1,10 @@
 from flask import render_template
 from tooldb import app
-import mysql.connector
+from dotenv import load_dotenv
+# import mysql.connector
+import boto3
+import botocore.config import Config
+
 
 # # MySQL connection string
 # def createConnection(host):
@@ -17,8 +21,17 @@ import mysql.connector
 #         print(f"The error '{e}' occurred")
 #     return connection
 
+load_dotenv()
+AWS_REGION_NAME = os.getenv('AWS_REGION_NAME')
 
-# MySQL connection string
+aws_config = Config(
+    region_name = 'AWS_REGION_NAME'
+)
+
+rds_data = boto3.client('rds-data', config=aws_config, aws_access_key_id='TODO', aws_secret_access_key='TODO')
+
+
+# Aurora connection string
 def createConnection(host):
     connection = None
     try:
@@ -76,7 +89,9 @@ def executeReadQueryAll(connection, query):
 # connection = createConnection("tooldb/tooling-db.db")
 
 # new connection to local mysql db (tooling-db-db)
-connection = createConnection("mysql://flask_user:flaskpasswd@localhost/tool_users")
+# connection = createConnection("mysql://flask_user:flaskpasswd@localhost/tool_users")
+
+# aurora connection string
 
 
 @app.route("/")
